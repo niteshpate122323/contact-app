@@ -10,7 +10,9 @@ app.use(express.static('public'));
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+})
+.then(() => console.log('✅ Connected to MongoDB'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
 
 const Contact = mongoose.model('Contact', {
   name: String,
@@ -19,15 +21,29 @@ const Contact = mongoose.model('Contact', {
 });
 
 app.post('/api/contact', async (req, res) => {
-  const contact = new Contact(req.body);
-  await contact.save();
-  res.send('Message received!');
+  try {
+    const contact = new Contact(req.body);
+    await contact.save();
+    res.send('✅ Message received!');
+  } catch (error) {
+    console.error('❌ Error saving contact:', error);
+    res.status(500).send('❌ Something went wrong');
+  }
 });
 
-// Optional: Show all submissions
 app.get('/api/submissions', async (req, res) => {
-  const all = await Contact.find();
-  res.json(all);
+  try {
+    const all = await Contact.find();
+    res.json(all);
+  } catch (error) {
+    res.status(500).send('❌ Failed to fetch submissions');
+  }
 });
 
-module.exports = app;
+if (process.env.LOCAL === "true") {
+  app.listen(3000, () => {
+    console.log("🚀 Local server running at http://localhost:3000");
+  });
+} else {
+  module.exports = app;
+}

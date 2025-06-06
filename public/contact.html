@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html>
-<head><title>Contact Us</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact Form</title>
+</head>
 <body>
-  <h2>Contact Us</h2>
+  <h1>Contact Us</h1>
   <form action="/api/contact" method="POST">
-    <input type="text" name="name" placeholder="Your Name" required><br>
-    <input type="email" name="email" placeholder="Your Email" required><br>
-    <textarea name="message" placeholder="Your Message" required></textarea><br>
+    <input type="text" name="name" placeholder="Your Name" required><br><br>
+    <input type="email" name="email" placeholder="Your Email" required><br><br>
+    <textarea name="message" placeholder="Your Message" required></textarea><br><br>
     <button type="submit">Send</button>
   </form>
 </body>
